@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PickFlow — Smart Order Picking System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef7ff',
+                            100: '#d9edff',
+                            200: '#bce0ff',
+                            300: '#8ecdff',
+                            400: '#59b0ff',
+                            500: '#3b8bff',
+                            600: '#1e66f5',
+                            700: '#1a54e1',
+                            800: '#1c44b6',
+                            900: '#1d3d8f',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1e66f5 0%, #3b8bff 50%, #59b0ff 100%); }
+        .glass { background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(30,102,245,0.12); }
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
+        @keyframes fadeIn { to { opacity: 1; } }
+        .fade-in:nth-child(2) { animation-delay: 0.15s; }
+        .fade-in:nth-child(3) { animation-delay: 0.3s; }
+        .fade-in:nth-child(4) { animation-delay: 0.45s; }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-xl gradient-bg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                    </svg>
+                </div>
+                <span class="text-xl font-bold text-gray-900">PickFlow</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+                <a href="#features" class="hover:text-brand-600 transition-colors">Features</a>
+                <a href="#how-it-works" class="hover:text-brand-600 transition-colors">How It Works</a>
+                <a href="#pricing" class="hover:text-brand-600 transition-colors">Pricing</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="#" class="hidden sm:inline-block text-sm font-medium text-gray-600 hover:text-brand-600 transition-colors">Sign In</a>
+                <a href="#waitlist" class="px-5 py-2.5 text-sm font-semibold text-white rounded-xl gradient-bg hover:opacity-90 transition-opacity shadow-lg shadow-brand-500/25">
+                    Join Waitlist
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden">
+        <div class="absolute inset-0 -z-10">
+            <div class="absolute top-20 left-1/4 w-96 h-96 bg-brand-200/30 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-brand-100/40 rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="fade-in inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-50 text-brand-700 text-sm font-medium mb-8 border border-brand-100">
+                <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                Coming Soon — Join the Early Access
+            </div>
+            <h1 class="fade-in text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1] max-w-4xl mx-auto">
+                Order picking,
+                <span class="text-transparent bg-clip-text gradient-bg">reimagined.</span>
+            </h1>
+            <p class="fade-in mt-6 text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
+                PickFlow streamlines your warehouse operations with intelligent route optimization,
+                real-time tracking, and seamless integrations — so your team picks faster with fewer errors.
+            </p>
+            <div class="fade-in mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#waitlist" class="w-full sm:w-auto px-8 py-4 text-base font-semibold text-white rounded-2xl gradient-bg hover:opacity-90 transition-opacity shadow-xl shadow-brand-500/25">
+                    Get Early Access
+                </a>
+                <a href="#how-it-works" class="w-full sm:w-auto px-8 py-4 text-base font-semibold text-gray-700 rounded-2xl bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-200">
+                    See How It Works
+                </a>
+            </div>
+        </div>
+
+        <!-- Hero visual -->
+        <div class="max-w-5xl mx-auto mt-16 px-6">
+            <div class="rounded-3xl border border-gray-200 bg-gray-50 p-2 shadow-2xl shadow-gray-200/50">
+                <div class="rounded-2xl bg-white border border-gray-100 overflow-hidden">
+                    <!-- Mock dashboard -->
+                    <div class="border-b border-gray-100 px-6 py-4 flex items-center gap-3">
+                        <div class="flex gap-1.5">
+                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                        </div>
+                        <div class="flex-1 flex justify-center">
+                            <div class="px-4 py-1.5 bg-gray-50 rounded-lg text-xs text-gray-400 font-medium">app.pickflow.io/dashboard</div>
+                        </div>
+                    </div>
+                    <div class="p-6 md:p-8 grid md:grid-cols-3 gap-4">
+                        <div class="p-5 rounded-2xl bg-gradient-to-br from-brand-50 to-white border border-brand-100">
+                            <p class="text-sm font-medium text-brand-600">Orders Today</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-1">1,284</p>
+                            <p class="text-xs text-green-600 font-medium mt-2">+12.5% vs yesterday</p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-white border border-emerald-100">
+                            <p class="text-sm font-medium text-emerald-600">Pick Accuracy</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-1">99.8%</p>
+                            <p class="text-xs text-green-600 font-medium mt-2">Above target</p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-gradient-to-br from-violet-50 to-white border border-violet-100">
+                            <p class="text-sm font-medium text-violet-600">Avg. Pick Time</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-1">42s</p>
+                            <p class="text-xs text-green-600 font-medium mt-2">-8s improvement</p>
+                        </div>
+                        <div class="md:col-span-2 p-5 rounded-2xl bg-gray-50 border border-gray-100">
+                            <p class="text-sm font-medium text-gray-500 mb-4">Active Pick Routes</p>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-brand-100 flex items-center justify-center text-brand-600 text-xs font-bold">A3</div>
+                                    <div class="flex-1">
+                                        <div class="h-2 bg-brand-100 rounded-full"><div class="h-2 bg-brand-500 rounded-full" style="width:78%"></div></div>
+                                    </div>
+                                    <span class="text-sm font-medium text-gray-600">78%</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600 text-xs font-bold">B1</div>
+                                    <div class="flex-1">
+                                        <div class="h-2 bg-emerald-100 rounded-full"><div class="h-2 bg-emerald-500 rounded-full" style="width:45%"></div></div>
+                                    </div>
+                                    <span class="text-sm font-medium text-gray-600">45%</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center text-violet-600 text-xs font-bold">C7</div>
+                                    <div class="flex-1">
+                                        <div class="h-2 bg-violet-100 rounded-full"><div class="h-2 bg-violet-500 rounded-full" style="width:92%"></div></div>
+                                    </div>
+                                    <span class="text-sm font-medium text-gray-600">92%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-gray-50 border border-gray-100">
+                            <p class="text-sm font-medium text-gray-500 mb-3">Pickers Online</p>
+                            <div class="flex -space-x-2">
+                                <div class="w-9 h-9 rounded-full bg-brand-200 border-2 border-white flex items-center justify-center text-xs font-bold text-brand-700">JD</div>
+                                <div class="w-9 h-9 rounded-full bg-emerald-200 border-2 border-white flex items-center justify-center text-xs font-bold text-emerald-700">SM</div>
+                                <div class="w-9 h-9 rounded-full bg-violet-200 border-2 border-white flex items-center justify-center text-xs font-bold text-violet-700">AK</div>
+                                <div class="w-9 h-9 rounded-full bg-amber-200 border-2 border-white flex items-center justify-center text-xs font-bold text-amber-700">RL</div>
+                                <div class="w-9 h-9 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs font-bold text-gray-500">+6</div>
+                            </div>
+                            <p class="mt-3 text-2xl font-bold text-gray-900">10 <span class="text-sm font-normal text-gray-400">active</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <p class="text-sm font-semibold text-brand-600 uppercase tracking-wider mb-3">Features</p>
+                <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight">Everything you need to pick smarter</h2>
+                <p class="mt-4 text-lg text-gray-500 max-w-2xl mx-auto">Built for modern warehouses, PickFlow combines smart routing, real-time visibility, and powerful analytics.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Feature 1 -->
+                <div class="card-hover p-8 rounded-3xl bg-white border border-gray-100 shadow-sm">
+                    <div class="w-12 h-12 rounded-2xl gradient-bg flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Smart Route Optimization</h3>
+                    <p class="text-gray-500 leading-relaxed">AI-powered pick routes that minimize travel time and maximize picks per hour across your warehouse.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="card-hover p-8 rounded-3xl bg-white border border-gray-100 shadow-sm">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Real-Time Tracking</h3>
+                    <p class="text-gray-500 leading-relaxed">Monitor every order, picker, and route in real time. Know exactly where things stand at any moment.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="card-hover p-8 rounded-3xl bg-white border border-gray-100 shadow-sm">
+                    <div class="w-12 h-12 rounded-2xl bg-violet-500 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Mobile-First Picking</h3>
+                    <p class="text-gray-500 leading-relaxed">Purpose-built mobile interface with barcode scanning, voice confirmation, and one-hand operation.</p>
+                </div>
+                <!-- Feature 4 -->
+                <div class="card-hover p-8 rounded-3xl bg-white border border-gray-100 shadow-sm">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Advanced Analytics</h3>
+                    <p class="text-gray-500 leading-relaxed">Deep insights into picker performance, bottlenecks, and trends to continuously improve operations.</p>
+                </div>
+                <!-- Feature 5 -->
+                <div class="card-hover p-8 rounded-3xl bg-white border border-gray-100 shadow-sm">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-500 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Seamless Integrations</h3>
+                    <p class="text-gray-500 leading-relaxed">Connect with your WMS, ERP, and e-commerce platforms. Works with what you already use.</p>
+                </div>
+                <!-- Feature 6 -->
+                <div class="card-hover p-8 rounded-3xl bg-white border border-gray-100 shadow-sm">
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Team Management</h3>
+                    <p class="text-gray-500 leading-relaxed">Assign zones, manage shifts, and balance workloads automatically across your picking team.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-24">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <p class="text-sm font-semibold text-brand-600 uppercase tracking-wider mb-3">How It Works</p>
+                <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight">Up and running in minutes</h2>
+                <p class="mt-4 text-lg text-gray-500 max-w-2xl mx-auto">Three simple steps to transform your warehouse picking operations.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 rounded-2xl bg-brand-50 flex items-center justify-center text-2xl font-extrabold text-brand-600 mx-auto mb-6 border border-brand-100">1</div>
+                    <h3 class="text-xl font-bold mb-3">Connect Your Systems</h3>
+                    <p class="text-gray-500 leading-relaxed">Integrate with your existing WMS, ERP, or e-commerce platform in a few clicks. We handle the data sync.</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 rounded-2xl bg-brand-50 flex items-center justify-center text-2xl font-extrabold text-brand-600 mx-auto mb-6 border border-brand-100">2</div>
+                    <h3 class="text-xl font-bold mb-3">Map Your Warehouse</h3>
+                    <p class="text-gray-500 leading-relaxed">Upload your layout or use our visual editor. PickFlow learns your space and optimizes routes accordingly.</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 rounded-2xl bg-brand-50 flex items-center justify-center text-2xl font-extrabold text-brand-600 mx-auto mb-6 border border-brand-100">3</div>
+                    <h3 class="text-xl font-bold mb-3">Start Picking</h3>
+                    <p class="text-gray-500 leading-relaxed">Hand your team the mobile app and watch pick rates soar. Optimized routes are generated automatically.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="py-20 gradient-bg">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
+                <div>
+                    <p class="text-4xl md:text-5xl font-extrabold">3x</p>
+                    <p class="mt-2 text-white/70 font-medium">Faster Picking</p>
+                </div>
+                <div>
+                    <p class="text-4xl md:text-5xl font-extrabold">99.8%</p>
+                    <p class="mt-2 text-white/70 font-medium">Accuracy Rate</p>
+                </div>
+                <div>
+                    <p class="text-4xl md:text-5xl font-extrabold">40%</p>
+                    <p class="mt-2 text-white/70 font-medium">Less Walking</p>
+                </div>
+                <div>
+                    <p class="text-4xl md:text-5xl font-extrabold">2min</p>
+                    <p class="mt-2 text-white/70 font-medium">Setup Time</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <p class="text-sm font-semibold text-brand-600 uppercase tracking-wider mb-3">Pricing</p>
+                <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight">Simple, transparent pricing</h2>
+                <p class="mt-4 text-lg text-gray-500 max-w-2xl mx-auto">Start free and scale as your warehouse grows. No hidden fees, no surprises.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <!-- Starter -->
+                <div class="card-hover p-8 rounded-3xl bg-white border border-gray-100 shadow-sm">
+                    <p class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Starter</p>
+                    <p class="mt-4 text-4xl font-extrabold">Free</p>
+                    <p class="mt-1 text-gray-400 text-sm">Up to 5 pickers</p>
+                    <hr class="my-6 border-gray-100">
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            Basic route optimization
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            Mobile picking app
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            500 orders / month
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            Email support
+                        </li>
+                    </ul>
+                    <a href="#waitlist" class="mt-8 block w-full py-3 text-center text-sm font-semibold rounded-xl border-2 border-gray-200 text-gray-700 hover:border-brand-500 hover:text-brand-600 transition-colors">
+                        Join Waitlist
+                    </a>
+                </div>
+                <!-- Pro -->
+                <div class="card-hover p-8 rounded-3xl bg-white border-2 border-brand-500 shadow-lg shadow-brand-500/10 relative">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 gradient-bg text-white text-xs font-bold rounded-full">Most Popular</div>
+                    <p class="text-sm font-semibold text-brand-600 uppercase tracking-wider">Pro</p>
+                    <p class="mt-4 text-4xl font-extrabold">$49<span class="text-lg font-medium text-gray-400">/mo</span></p>
+                    <p class="mt-1 text-gray-400 text-sm">Up to 25 pickers</p>
+                    <hr class="my-6 border-gray-100">
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            AI route optimization
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            Real-time dashboard
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            Unlimited orders
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            Integrations & API access
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            Priority support
+                        </li>
+                    </ul>
+                    <a href="#waitlist" class="mt-8 block w-full py-3 text-center text-sm font-semibold rounded-xl text-white gradient-bg hover:opacity-90 transition-opacity shadow-lg shadow-brand-500/25">
+                        Join Waitlist
+                    </a>
+                </div>
+                <!-- Enterprise -->
+                <div class="card-hover p-8 rounded-3xl bg-white border border-gray-100 shadow-sm">
+                    <p class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Enterprise</p>
+                    <p class="mt-4 text-4xl font-extrabold">Custom</p>
+                    <p class="mt-1 text-gray-400 text-sm">Unlimited pickers</p>
+                    <hr class="my-6 border-gray-100">
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            Everything in Pro
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            Multi-warehouse support
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            Custom integrations
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            Dedicated account manager
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            SLA & on-prem options
+                        </li>
+                    </ul>
+                    <a href="#waitlist" class="mt-8 block w-full py-3 text-center text-sm font-semibold rounded-xl border-2 border-gray-200 text-gray-700 hover:border-brand-500 hover:text-brand-600 transition-colors">
+                        Contact Sales
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waitlist CTA -->
+    <section id="waitlist" class="py-24">
+        <div class="max-w-3xl mx-auto px-6 text-center">
+            <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight">Ready to pick faster?</h2>
+            <p class="mt-4 text-lg text-gray-500 max-w-xl mx-auto">Join the waitlist and be the first to experience PickFlow when we launch. Early members get exclusive perks.</p>
+            <form class="mt-10 flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onsubmit="event.preventDefault(); this.querySelector('button').textContent='You\'re on the list!'; this.querySelector('button').disabled=true; this.querySelector('button').classList.add('opacity-70');">
+                <input type="email" required placeholder="you@company.com" class="flex-1 px-5 py-3.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                <button type="submit" class="px-8 py-3.5 text-sm font-semibold text-white rounded-xl gradient-bg hover:opacity-90 transition-opacity shadow-lg shadow-brand-500/25 whitespace-nowrap">
+                    Join Waitlist
+                </button>
+            </form>
+            <p class="mt-4 text-xs text-gray-400">No spam, ever. We'll only email you when we launch.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                    </svg>
+                </div>
+                <span class="text-lg font-bold text-gray-900">PickFlow</span>
+            </div>
+            <p class="text-sm text-gray-400">&copy; 2026 PickFlow. All rights reserved.</p>
+            <div class="flex items-center gap-6 text-sm text-gray-400">
+                <a href="#" class="hover:text-gray-600 transition-colors">Privacy</a>
+                <a href="#" class="hover:text-gray-600 transition-colors">Terms</a>
+                <a href="#" class="hover:text-gray-600 transition-colors">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
